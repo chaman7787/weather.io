@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="app.js"></script>
+  
+</head>
+<body>
+    <main>
+        <div class="row" style="text-align: center;">
+            <input type="search" id="search" placeholder="search by city">
+               </div>
+           
+    <div class="row" id="weather"></div> 
+</main>
+    
+</body>
+
+
+<script>
+    const search = document.querySelector("#search");
+const weather = document.querySelector("#weather");
+const API_KEY =`3265874a2c77ae4a04bb96236a642d2f`
+
+search.addEventListener(
+  "keyup",
+     function (event){
+        if(event.key == "Enter"){
+            GetweatherData(event.target.value);
+    }
+}
+);
+
+const GetweatherData = async (city)=>{
+weather.innerHTML=`<h1 class="loader">Loading...</h1>`
+const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=3265874a2c77ae4a04bb96236a642d2f&units=metric`;
+
+const response =await fetch(API_URL);
+const data =await response.json();
+console.log("sunrise",);
+console.log("Sunset",);
+
+if(data.cod == 404){
+weather.innerHTML=`<h1>CITY NOT FOUND</h1>`
+}else{
+
+weather.innerHTML= `
+<div>
+ <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="">
+</div>
+
+<div>
+   <h2>${data.main.temp} °C</h2>
+   <h4>${data.weather[0].main}</h4>
+   <p>Sunrise:${new Date(data.sys.sunrise*1000).toLocaleTimeString()}</p>
+   <p>Sunset:${new Date(data.sys.sunset*1000).toLocaleTimeString()}</p>
+</div>  
+`
+
+}
+
+}
+</script>
+
+</html>
